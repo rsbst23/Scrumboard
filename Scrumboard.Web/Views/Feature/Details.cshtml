@@ -1,0 +1,78 @@
+﻿@model Scrumboard.Web.DAL.Feature
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Feature</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Title)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Title)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ReleaseId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ReleaseId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.BusinessValueId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.BusinessValueId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StartDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StartDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.EndDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EndDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PlannedStart)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlannedStart)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PlannedEnd)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlannedEnd)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ProjectId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ProjectId)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

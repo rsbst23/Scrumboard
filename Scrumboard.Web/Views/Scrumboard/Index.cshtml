@@ -1,0 +1,160 @@
+﻿@model Scrumboard.Web.Models.ScrumboardModel
+@using Scrumboard.Web.Helpers;
+@using Scrumboard.Web.DAL;
+
+@{
+    ViewBag.Title = "Scrumboard";
+}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+<script src="~/Scripts/jquery.contextMenu.js"></script>
+<link href="~/Content/jquery.contextMenu.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SprintId").change(function () {
+            $("#sprint").submit();
+        });
+        
+        $("#scrumboard > tbody > tr").each(function (index, trElement) {
+            setupScrumboardRow(trElement);
+        });
+
+        $.contextMenu({
+            selector: '.pbi',
+            events: {
+                show: function () {
+                    cancelCreateTasks();
+                }
+            },
+            build: function (triggeringElement) {
+                var items = {
+                    'generateTasks': { name: 'Create tasks', icon: 'createTasks' }
+                };
+
+                return {
+                    callback: pbiContextMenuItemSelected,
+                    items: items
+                };
+            }
+        });
+
+        $.contextMenu({
+            selector: '.sbi',
+            events: {
+                show: function () {
+                    //cancelDeleteTasks();
+                }
+            },
+            build: function (triggeringElement) {
+                var items = {
+                    'deleteTask': { name: 'Delete task', icon: 'deleteTask' }
+                };
+
+                return {
+                    callback: sbiContextMenuItemSelected,
+                    items: items
+                };
+            }
+        });
+
+        $(".pbi a").click(function () {
+            editStory($(this));
+            return false;
+        });
+
+        $(".sbi a").click(function () {
+            editTask($(this));
+            return false;
+        });
+    });
+</script>
+
+<script src="~/Scripts/pbiBoard.js" type="text/javascript"></script>
+<script src="~/Scripts/scrumboard.js" type="text/javascript"></script>
+
+<h2>Scrumboard</h2>
+
+<div class="editor-label" style="float: left">
+    @using (Html.BeginForm("Index", "Scrumboard", FormMethod.Post, new { name = "sprint", id = "sprint" }))
+    {
+        @Html.Label("Sprint")
+        @Html.DropDownList("SprintId", String.Empty) @Html.ActionLink("Create New Sprint", "Create", "Sprint")
+    }
+</div>
+
+<div style="float: right">
+    <p>
+        @Html.ActionLink("Create Story", "Create", "BacklogItem", new { backlogItemTypeId = 1 }, null)
+        @Html.ActionLink("Create Bug", "Create", "BacklogItem", new { backlogItemTypeId = 2 }, null)
+    </p>
+</div>
+<div style="clear: both;"></div>
+
+<table class="tfsBoard" id="scrumboard">
+    <thead>
+        <tr id="statuses">
+            <th class="story" colspan="2">Stories/Bugs</th>
+            <th class="todo" data-status="To Do">To Do</th>
+            <th class="inprogress" data-status="In Progress">In Progress</th>
+            <th class="done" data-status="Done">Done</th>
+        </tr>
+    </thead>
+    <tbody>
+    @{
+        foreach (BacklogItem backlogItem in Model.BacklogItems.OrderByDescending(x => x.Priority))
+        {
+                    <tr class="pbiRow ignore" id="tr_@(backlogItem.Id)_">
+                        <td class="pbiColumn ignore">
+                            @if (backlogItem.BacklogItemTypeId == 1)
+                            {
+                                @Html.Story(backlogItem);
+                            }
+                            else
+                            {
+                                @Html.Bug(backlogItem);
+                            }
+                        </td>
+                        
+                        @if (backlogItem.Tasks.Count > 0)
+                        {
+                            <td class="release ignore">
+
+                            </td>
+                            <td data-status="To Do" class="ignore">
+                            @{
+                            foreach (var task in backlogItem.ToDo)
+                            {
+                                @Html.Task(task, backlogItem.Id);
+                            }
+                            }
+                            </td>
+                            <td data-status="In Progress" class="ignore">
+                            @{
+                            foreach (var task in backlogItem.InProgress)
+                            {
+                                @Html.Task(task, backlogItem.Id);
+                            }
+                            }
+                            </td>
+                            <td data-status="Done" class="ignore">
+                            @{
+                            foreach (var task in backlogItem.Done)
+                            {
+                                @Html.Task(task, backlogItem.Id);
+                            }
+                            }
+                            </td>
+                        }
+                        else 
+                        {
+                            <td colspan="4" class="ignore"></td>
+                        }
+                    </tr>
+        }
+        }
+    </tbody>
+</table>
+
+<iframe id="taskForm" class="taskForm"></iframe>

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Scrumboard.Web.Models.UserProfile>
+
+@{
+    ViewBag.Title = "Members";
+    int TeamId = Convert.ToInt32(ViewBag.TeamId);
+}
+
+<h2>Members</h2>
+
+<p>
+    @Html.ActionLink("Add", "AddTeamMember", "Team", new { teamId = TeamId }, null)
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Remove", "Remove", new { id=item.UserId })
+        </td>
+    </tr>
+}
+
+</table>

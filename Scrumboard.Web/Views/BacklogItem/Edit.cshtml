@@ -1,0 +1,128 @@
+﻿@model Scrumboard.Web.DAL.BacklogItem
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Story</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TeamId, "Team")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("TeamId", String.Empty)
+            @Html.ValidationMessageFor(model => model.TeamId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BusinessValueId, "BusinessValue")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("BusinessValueId", String.Empty)
+            @Html.ValidationMessageFor(model => model.BusinessValueId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Priority)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Priority)
+            @Html.ValidationMessageFor(model => model.Priority)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReleaseId, "Release")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ReleaseId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ReleaseId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SprintId, "Sprint")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("SprintId", String.Empty)
+            @Html.ValidationMessageFor(model => model.SprintId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FeatureId, "Feature")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("FeatureId", String.Empty)
+            @Html.ValidationMessageFor(model => model.FeatureId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.StartDate)
+            @Html.ValidationMessageFor(model => model.StartDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EndDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EndDate)
+            @Html.ValidationMessageFor(model => model.EndDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BacklogItemStatusId, "BacklogItemStatus")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("BacklogItemStatusId", String.Empty)
+            @Html.ValidationMessageFor(model => model.BacklogItemStatusId)
+        </div>
+
+        <div class="editor-field">
+            @Html.HiddenFor(model => model.ProjectId, new { @Value = Model.ProjectId })
+            @Html.ValidationMessageFor(model => model.ProjectId)
+        </div>
+
+        @Html.HiddenFor(model => model.BacklogItemTypeId)
+        @Html.HiddenFor(model => model.Id)
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<div>
+    @{Html.RenderAction("Index", "Task", new { backlogItemId = Model.Id });}
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
