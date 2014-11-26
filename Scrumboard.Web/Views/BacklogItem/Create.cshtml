@@ -6,7 +6,7 @@
     int BacklogItemTypeId = Convert.ToInt32(ViewBag.BacklogItemTypeId);
 }
 
-<h2>Create</h2>
+<h2>Create @ViewBag.BacklogItemType</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

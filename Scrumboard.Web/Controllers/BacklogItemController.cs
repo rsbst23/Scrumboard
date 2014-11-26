@@ -56,6 +56,15 @@ namespace Scrumboard.Web.Controllers
             ViewBag.BacklogItemStatusId = new SelectList(db.BacklogItemStatus, "Id", "Title", 1);
             ViewBag.BacklogItemTypeId = backlogItemTypeId;
 
+            if (backlogItemTypeId == 1)
+            {
+                ViewBag.BacklogItemType = "Story";
+            }
+            else 
+            {
+                ViewBag.BacklogItemType = "Bug";
+            }
+
             return View();
         }
 

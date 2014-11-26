@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Stories and Bugs</h2>
 
 <p>
     @Html.ActionLink("Create Story", "Create", new { backlogItemTypeId = 1 })
@@ -89,9 +89,8 @@
         <td>
             @Html.DisplayFor(modelItem => item.Project.Name)
         </td>
-        <td>
+        <td class="action-column">
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
