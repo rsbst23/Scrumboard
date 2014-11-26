@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Scrumboard.Web.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,8 +24,10 @@ namespace Scrumboard.Web.Models
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; }
+        public int Id { get; set; }
         public string UserName { get; set; }
+
+        public virtual ICollection<TeamMember> TeamMembers { get; set; }
     }
 
     public class RegisterExternalLoginModel

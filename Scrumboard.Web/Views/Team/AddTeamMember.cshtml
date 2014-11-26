@@ -21,7 +21,7 @@
             @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
-            @Html.ActionLink("Add", "AddTeamMemberConfirmed", new { id = item.UserId, teamId = TeamId }, null)
+            @Html.ActionLink("Add", "AddTeamMemberConfirmed", new { id = item.Id, teamId = TeamId }, null)
         </td>
     </tr>
 }

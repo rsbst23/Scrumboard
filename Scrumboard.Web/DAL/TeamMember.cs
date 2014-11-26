@@ -11,13 +11,21 @@ namespace Scrumboard.Web.DAL
     public class TeamMember : BaseObject
     {
         [Required]
+        public int UserProfileId { get; set; }
+
+        public virtual UserProfile UserProfile { get; set; }
+
+        [Required]
         public int TeamId { get; set; }
 
         public virtual Team Team { get; set; }
 
-        [Required]
-        public int UserProfileId { get; set; }
-
-        public virtual UserProfile UserProfile { get; set; }
+        public string UserName
+        {
+            get
+            {
+                return UserProfile.UserName;
+            }
+        }
     }
 }

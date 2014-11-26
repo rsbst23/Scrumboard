@@ -123,7 +123,7 @@ namespace Scrumboard.Web.Controllers
             dlo.LoadWith<TeamMember>(x => x.UserProfile);
 
             var xf = (from teamMember in db.TeamMembers
-                      join userProfile in db.UserProfiles on teamMember.UserProfileId equals userProfile.UserId
+                      join userProfile in db.UserProfiles on teamMember.UserProfileId equals userProfile.Id
                       where teamMember.TeamId == teamId
                       select userProfile).ToList();
 

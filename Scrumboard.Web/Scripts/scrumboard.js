@@ -86,7 +86,7 @@ function editTask(task) {
     // Show the form and finish up
     taskForm.show();
 
-    taskForm.attr('src', '/Task/Edit/' + taskId);
+    taskForm.attr('src', './Task/Edit/' + taskId);
 
     return false;
 }

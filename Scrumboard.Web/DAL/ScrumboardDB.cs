@@ -24,13 +24,13 @@ namespace Scrumboard.Web.DAL
 
             modelBuilder.Entity<Task>().HasRequired(x => x.TaskStatus).WithMany().WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<BacklogItem>().HasRequired(x => x.BacklogItemType).WithMany().WillCascadeOnDelete(false);
-
             modelBuilder.Entity<BacklogItem>().Ignore(x => x.ToDo);
 
             modelBuilder.Entity<BacklogItem>().Ignore(x => x.InProgress);
 
             modelBuilder.Entity<BacklogItem>().Ignore(x => x.Done);
+
+            modelBuilder.Entity<TeamMember>().Ignore(x => x.UserName);
 
             base.OnModelCreating(modelBuilder);
         }

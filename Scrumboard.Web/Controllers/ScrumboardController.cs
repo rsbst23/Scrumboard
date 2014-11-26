@@ -22,7 +22,7 @@ namespace Scrumboard.Web.Controllers
 
             var scrumboardModel = new ScrumboardModel();
 
-            Dictionary<int, UserProfile> userProfiles = db.UserProfiles.ToDictionary(x => x.UserId, x => x);
+            Dictionary<int, UserProfile> userProfiles = db.UserProfiles.ToDictionary(x => x.Id, x => x);
 
             Session.Add("UserProfiles", userProfiles);
 

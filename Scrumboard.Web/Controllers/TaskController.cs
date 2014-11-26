@@ -41,7 +41,7 @@ namespace Scrumboard.Web.Controllers
         public ActionResult Create(int backlogItemId)
         {
             ViewBag.TaskStatusId = new SelectList(db.TaskStatuses, "Id", "Title", 1);
-            ViewBag.TeamMemberId = new SelectList(db.TeamMembers, "Id", "Id");
+            ViewBag.TeamMemberId = new SelectList(db.TeamMembers.Include(x => x.UserProfile), "Id", "UserName");
             ViewBag.BacklogItemId = backlogItemId;
             ViewBag.RefreshParent = false;
 
@@ -63,7 +63,7 @@ namespace Scrumboard.Web.Controllers
             }
 
             ViewBag.TaskStatusId = new SelectList(db.TaskStatuses, "Id", "Title", task.TaskStatusId);
-            ViewBag.TeamMemberId = new SelectList(db.TeamMembers, "Id", "Id", task.TeamMemberId);
+            ViewBag.TeamMemberId = new SelectList(db.TeamMembers.Include(x => x.UserProfile), "Id", "UserName", task.TeamMemberId);
             return PartialView(task);
         }
 
@@ -78,7 +78,7 @@ namespace Scrumboard.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.TaskStatusId = new SelectList(db.TaskStatuses, "Id", "Title", task.TaskStatusId);
-            ViewBag.TeamMemberId = new SelectList(db.TeamMembers, "Id", "Id", task.TeamMemberId);
+            ViewBag.TeamMemberId = new SelectList(db.TeamMembers.Include(x => x.UserProfile), "Id", "UserName", task.TeamMemberId);
             ViewBag.RefreshParent = false;
             return PartialView(task);
         }
@@ -98,7 +98,7 @@ namespace Scrumboard.Web.Controllers
             }
 
             ViewBag.TaskStatusId = new SelectList(db.TaskStatuses, "Id", "Title", task.TaskStatusId);
-            ViewBag.TeamMemberId = new SelectList(db.TeamMembers, "Id", "Id", task.TeamMemberId);
+            ViewBag.TeamMemberId = new SelectList(db.TeamMembers.Include(x => x.UserProfile), "Id", "UserName", task.TeamMemberId);
             return PartialView(task);
         }
 
