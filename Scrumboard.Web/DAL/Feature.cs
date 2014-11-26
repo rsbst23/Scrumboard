@@ -29,15 +29,19 @@ namespace Scrumboard.Web.DAL
 
         public ICollection<BacklogItem> BacklogItems { get; set; }
 
+        [DataType(DataType.Date)]
         [DisplayName("Start Date")]
         public DateTime? StartDate { get; set; }
 
+        [DataType(DataType.Date)]
         [DisplayName("End Date")]
         public DateTime? EndDate { get; set; }
 
+        [DataType(DataType.Date)]
         [DisplayName("Planned Start")]
         public DateTime? PlannedStart { get; set; }
 
+        [DataType(DataType.Date)]
         [DisplayName("Planned End")]
         public DateTime? PlannedEnd { get; set; }
     }

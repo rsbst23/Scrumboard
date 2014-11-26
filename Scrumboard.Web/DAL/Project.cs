@@ -20,9 +20,11 @@ namespace Scrumboard.Web.DAL
         [DisplayName("Active")]
         public bool Active { get; set; }
 
+        [DataType(DataType.Date)]
         [DisplayName("Start Date")]
         public DateTime? StartDate { get; set; }
 
+        [DataType(DataType.Date)]
         [DisplayName("End Date")]
         public DateTime? EndDate { get; set; }
 
