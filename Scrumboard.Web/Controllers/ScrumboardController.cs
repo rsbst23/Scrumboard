@@ -46,6 +46,8 @@ namespace Scrumboard.Web.Controllers
 
             Dictionary<int, UserProfile> userProfiles = db.UserProfiles.ToDictionary(x => x.Id, x => x);
 
+            scrumboardModel.TeamMembers = db.TeamMembers.Include(x => x.UserProfile).OrderBy(x => x.UserProfile.UserName);
+
             Session.Add("UserProfiles", userProfiles);
 
             if (sprintId != 0)
@@ -54,6 +56,33 @@ namespace Scrumboard.Web.Controllers
             }
 
             return View(scrumboardModel);
+        }
+
+        [HttpPost]
+        public ActionResult AssignTask(int taskId, string assignedTo)
+        {
+            try
+            {
+                var userProfile = db.UserProfiles.Where(x => x.UserName == assignedTo).FirstOrDefault();
+
+                var teamMember = db.TeamMembers.Where(x => x.UserProfileId == userProfile.Id).FirstOrDefault();
+
+                var task = db.Tasks.Where(x => x.Id == taskId).FirstOrDefault();
+
+                task.TeamMemberId = teamMember.Id;
+
+                db.SaveChanges();
+
+                var data = new { displayName = assignedTo, success = true };
+
+                return Json(data);
+            }
+            catch(Exception ex)
+            {
+                var data = new {message = ex.ToString(), success = false };
+
+                return Json(data);
+            }
         }
 
     }

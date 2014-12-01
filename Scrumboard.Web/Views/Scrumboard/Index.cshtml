@@ -4,6 +4,7 @@
 
 @{
     ViewBag.Title = "Scrumboard";
+    string currentUserDisplayName = User.Identity.Name;
 }
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -47,16 +48,7 @@
                     //cancelDeleteTasks();
                 }
             },
-            build: function (triggeringElement) {
-                var items = {
-                    'deleteTask': { name: 'Delete task', icon: 'deleteTask' }
-                };
-
-                return {
-                    callback: sbiContextMenuItemSelected,
-                    items: items
-                };
-            }
+            build: buildTaskContextMenu
         });
 
         $(".pbi a").click(function () {
@@ -69,6 +61,52 @@
             return false;
         });
     });
+
+    function buildTaskContextMenu(task) {
+        var assignedTo = $(task).find('dd.owner').attr('title'),
+                index,
+                returnValue = {
+                    callback: sbiContextMenuItemSelected,
+                    items: {}
+                };
+
+        returnValue.items.deleteTask = {
+            name: 'Delete task', icon: 'deleteTask'
+        }
+
+        // Assign me
+                if (assignedTo !== '@Ajax.JavaScriptStringEncode(currentUserDisplayName)') {
+                    returnValue.items.assignMe = {
+                        name: 'Assign to me',
+                        icon: 'assignMe'
+                    };
+                }
+
+        // Assign team member
+                returnValue.items.assignToSubmenu = {
+                    name: 'Assign to',
+                    icon: 'assignTo',
+                    items: {}
+                };
+            @{
+                string jsEncodedName;
+                foreach (TeamMember member in Model.TeamMembers)
+                {
+                    jsEncodedName = Ajax.JavaScriptStringEncode(member.UserProfile.UserName);
+                    
+                     @:if ('@jsEncodedName' !== '@Ajax.JavaScriptStringEncode(currentUserDisplayName)') {
+                        @:    returnValue.items.assignToSubmenu.items['at-' + '@jsEncodedName'] = {
+                    @:        name: '@jsEncodedName'
+                        @: };
+                                                            @:
+                    @:}
+                }
+            }
+
+
+        // Return
+        return returnValue;
+    }
 </script>
 
 <script src="~/Scripts/pbiBoard.js" type="text/javascript"></script>

@@ -10,9 +10,12 @@ namespace Scrumboard.Web.Models
     {
         public IEnumerable<BacklogItem> BacklogItems { get; set; }
 
+        public IEnumerable<TeamMember> TeamMembers { get; set; }
+
         public ScrumboardModel()
         {
             BacklogItems = new List<BacklogItem>();
+            TeamMembers = new List<TeamMember>();
         }
     }
 }

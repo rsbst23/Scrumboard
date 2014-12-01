@@ -151,99 +151,6 @@ function cancelCreateTasks() {
     $("#createTasksForm").hide();
 }
 
-// Task context menu
-function taskContextMenuItemSelected(itemKey) {
-    var task = $(this),
-        taskId = task.attr('id'),
-        workRemainingElement = task.find('dd.workRemaining');
-
-    // Assign to me
-    if (itemKey === 'assignMe') {
-        assignTaskTo(taskId, getCurrentUserDisplayName());
-        return;
-    }
-
-    // Assign to a team member
-    if (/^at-/.test(itemKey)) {
-        assignTaskTo(taskId, itemKey.substring(3));
-        return;
-    }
-
-    // Unassign
-    if (itemKey === 'unassign') {
-        unassignTaskFrom(taskId);
-        return;
-    }
-
-    // Add hours
-    if (/^addHour/.test(itemKey)) {
-        addTaskHours(taskId, workRemainingElement, workRemainingElement.text(), itemKey.substr('addHour'.length));
-        return;
-    }
-
-    // Sync hours
-    if (itemKey === 'syncHours') {
-        syncTaskHours(taskId, workRemainingElement, workRemainingElement.text());
-        return;
-    }
-
-    // Burn remaining hours
-    if (itemKey === 'burnRemaining') {
-        removeTaskHours(taskId, workRemainingElement, workRemainingElement.text(), 'all');
-        return;
-    }
-
-    // Burn hours
-    if (/^burnHour/.test(itemKey)) {
-        removeTaskHours(taskId, workRemainingElement, workRemainingElement.text(), itemKey.substr('burnHour'.length));
-        return;
-    }
-}
-
-function assignTaskTo(taskId, assignToName, suppressConfirm) {
-    var ownerElement = $('dl#' + taskId + ' > dd.owner'),
-        confirmPromise,
-        assignedTo = ownerElement.attr('title');
-
-    if (assignedTo.length > 0 && !suppressConfirm) {
-        confirmPromise = $.confirm('This task is currently assigned to ' + assignedTo + '. Are you sure you would like to remove ' +
-            assignedTo.substring(0, assignedTo.indexOf(' ')) + ' and assign yourself?', 'notice');
-    } else {
-        confirmPromise = $.Deferred().resolve().promise();
-    }
-
-    confirmPromise.done(function () {
-        LoadingScreen.show();
-        $.ajax({
-            type: 'POST',
-            url: './Scrumboard/AssignTask',
-            data: {
-                id: taskId,
-                name: assignToName,
-                currentName: assignedTo
-            }
-        }).done(function (data) {
-            if (data.success) {
-                ownerElement.attr("title", data.displayName).text(data.abbreviation);
-                recheckNameAbbreviations();
-                alert('Task number ' + taskId + ' has been successfully assigned to ' +
-                    (data.displayName === getCurrentUserDisplayName() ? 'you' :
-                            data.displayName) + '.', 'success');
-            } else if (data.requireConfirm) {
-                ownerElement.attr('title', data.newCurrentName).text(data.abbreviation);
-                recheckNameAbbreviations();
-                $.confirm(data.confirmMessage, 'notice').done(function () {
-                    assignTaskTo(taskId, assignToName, true);
-                });
-            } else {
-                alert(data.message, 'error');
-            }
-        }).always(function () {
-            LoadingScreen.hide();
-        });
-    });
-}
-
 function unassignTaskFrom(taskId) {
     var ownerElement = $('dl#' + taskId + ' > dd.owner'),
         assignedTo = ownerElement.attr('title')
@@ -488,20 +395,59 @@ function sbiContextMenuItemSelected(itemKey, options) {
         menuPosition = $(options.$menu[0]).position(),
         taskForm,
         index,
-        taskId = sbi.closest('dl[class^="sbi"]')[0].id;;
+        taskId = sbi.closest('dl[class^="sbi"]')[0].id,
+        ownerElement = $('dl#' + sbiId + ' > dd.owner');
+
 
     // Generate Tasks
-    //if (itemKey === 'deleteTask') {
-    if (confirm('Are you sure you want to delete this task')) {
+    if (itemKey === 'deleteTask') {
+        if (confirm('Are you sure you want to delete this task')) {
+            $.ajax({
+                type: 'POST',
+                url: './Task/DeleteTaskFromScrumboard',
+                data: {
+                    id: taskId
+                }
+            }).done(function (data) {
+                location.reload();
+            });
+        }
+    }
+    else if (itemKey == 'assignMe') {
+        assignedTo = $('.username')[0].text;
+        
         $.ajax({
             type: 'POST',
-            url: './Task/DeleteTaskFromScrumboard',
+            url: './Scrumboard/AssignTask',
             data: {
-                id: taskId
+                taskId: taskId,
+                assignedTo: assignedTo
             }
         }).done(function (data) {
-            location.reload();
-        });
+            if (data.success) {
+                ownerElement.attr("title", data.displayName).text(data.displayName);
+            } else {
+                alert(data.message, 'error');
+            }
+        })
     }
-    //}
+    else {
+        assignedTo = itemKey.substr(3);
+
+        $.ajax({
+            type: 'POST',
+            url: './Scrumboard/AssignTask',
+            data: {
+                taskId: taskId,
+                assignedTo: assignedTo
+            }
+        }).done(function (data) {
+            if (data.success) {
+                ownerElement.attr("title", data.displayName).text(data.displayName);
+            } else {
+                alert(data.message, 'error');
+            }
+        })
+    }
 }
+
