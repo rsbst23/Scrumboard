@@ -94,7 +94,7 @@ function editTask(task) {
 function editStory(story) {
     var storyId = story.closest('dl[class^="pbi"]')[0].id;
 
-    window.open('/Story/Edit/' + storyId);
+    window.open('./BacklogItem/Edit/' + storyId);
 
     return false;
 }
