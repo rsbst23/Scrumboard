@@ -18,7 +18,29 @@ namespace Scrumboard.Web.Controllers
 
         public ActionResult Index(int sprintId = 0)
         {
-            ViewBag.SprintId = new SelectList(db.Sprints.Where(x => x.ProjectId == ProjectId), "Id", "Title", sprintId);
+            var sprints = db.Sprints.Where(x => x.ProjectId == ProjectId).OrderBy(x => x.Title).ToList();
+
+            if (sprintId == 0)
+            {
+                if (Session["SprintId"] == null)
+                {
+                    if (sprints.Count > 0)
+                    {
+                        sprintId = sprints.Last().Id;
+                        Session["SprintId"] = sprintId;
+                    }
+                }
+                else
+                {
+                    sprintId = Convert.ToInt32(Session["SprintId"]);
+                }
+            }
+            else
+            {
+                Session["SprintId"] = sprintId;
+            }
+
+            ViewBag.SprintId = new SelectList(sprints, "Id", "Title", sprintId);
 
             var scrumboardModel = new ScrumboardModel();
 
