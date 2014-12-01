@@ -16,12 +16,6 @@
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            Team
-        </th>
-        <th>
             Business Value
         </th>
         <th>
@@ -37,13 +31,7 @@
             Feature
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BacklogItemStatus.Title)
+            Status
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Project.Name)
@@ -55,12 +43,6 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Team.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.BusinessValue.Title)
@@ -76,13 +58,7 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Feature.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
+        </td>        
         <td>
             @Html.DisplayFor(modelItem => item.BacklogItemStatus.Title)
         </td>
