@@ -334,7 +334,7 @@ table.tfsBoard dl > dd.handle {
     position: absolute;
     top: 0px;
     right: -11px;
-    background: url("../../Images/draggableicon.png") no-repeat;
+    background: url("../Images/draggableicon.png") no-repeat;
 }
 
 table.tfsBoard > tbody dl.dev-task, fieldset.taskTypes > table > tbody > tr > td.dev:nth-child(odd) {
