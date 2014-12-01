@@ -26,7 +26,9 @@
                     }
                     else
                     {
-                        <p class="site-title">Select a Project</p>
+                        if (Request.IsAuthenticated) {
+                            <p class="site-title">Select a Project</p>
+                        }                        
                     }
                 </div>
                 <div class="float-right">
@@ -34,6 +36,7 @@
                         @Html.Partial("_LoginPartial")
                     </section>
                     <nav>
+                        @if (Request.IsAuthenticated) {
                         <ul id="menu">
                             <li>@Html.ActionLink("Projects", "Index", "Project")</li>
                             <li>@Html.ActionLink("Teams", "Index", "Team")</li>
@@ -46,6 +49,7 @@
                                 <li>@Html.ActionLink("Scrumboard", "Index", "Scrumboard")</li>
                             }
                         </ul>
+                        }
                     </nav>
                 </div>
             </div>

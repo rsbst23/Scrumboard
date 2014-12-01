@@ -18,9 +18,18 @@ namespace Scrumboard.Web.Controllers
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
-            Database.SetInitializer(new ScrumboardDBInitializer());
+            //Database.SetInitializer(new ScrumboardDBInitializer());
 
-            db.TaskStatuses.Find(1);
+            //db.TaskStatuses.Find(1);
+
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Project");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");                
+            }
 
             return View();
         }
